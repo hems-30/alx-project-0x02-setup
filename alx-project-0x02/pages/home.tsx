@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Header from '@/components/layout/Header';
 import Card from '@/components/common/Card';
 import PostModal from '@/components/common/PostModal';
 
@@ -15,26 +16,29 @@ const Home = () => {
   };
 
   return (
-    <div className="p-8 space-y-6">
-      <h1 className="text-3xl font-bold mb-6">Home Page</h1>
+    <>
+      <Header />
+      <div className="p-8 space-y-6">
+        <h1 className="text-3xl font-bold mb-6">Home Page</h1>
 
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="mb-4 px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700"
-      >
-        Add New Post
-      </button>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="mb-4 px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700"
+        >
+          Add New Post
+        </button>
 
-      {posts.map((post, index) => (
-        <Card key={index} title={post.title} content={post.content} />
-      ))}
+        {posts.map((post, index) => (
+          <Card key={index} title={post.title} content={post.content} />
+        ))}
 
-      <PostModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onAddPost={addPost}
-      />
-    </div>
+        <PostModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onAddPost={addPost}
+        />
+      </div>
+    </>
   );
 };
 
