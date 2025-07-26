@@ -1,50 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import Header from '@/components/layout/Header';
+import React from 'react';
+import { type PostProps } from '@/interfaces';
 import PostCard from '@/components/common/PostCard';
-import { PostProps } from '@/interfaces';
 
-const Posts = () => {
-  const [posts, setPosts] = useState<PostProps[]>([]);
-  const [loading, setLoading] = useState(true);
+interface PostsPageProps {
+  posts: PostProps[];
+}
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=10');
-        const data: PostProps[] = await res.json();
-        setPosts(data);
-      } catch (error) {
-        console.error('Failed to fetch posts:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, []);
-
+const PostsPage: React.FC<PostsPageProps> = ({ posts }) => {
   return (
-    <>
-      <Header />
-      <div className="p-8">
-        <h1 className="text-3xl font-bold mb-6">Posts Page</h1>
-
-        {loading && <p>Loading posts...</p>}
-
-        {!loading && posts.length === 0 && <p>No posts found.</p>}
-
-        {posts.map((post) => (
-          <PostCard
-            key={post.id}
-            id={post.id}
-            userId={post.userId}
-            title={post.title}
-            body={post.body}
-          />
-        ))}
-      </div>
-    </>
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-6">Posts</h1>
+      {posts.map((post) => (
+        <PostCard
+          key={post.id}
+          id={post.id}
+          userId={post.userId}
+          title={post.title}
+          body={post.body}
+        />
+      ))}
+    </div>
   );
 };
 
-export default Posts;
+export const getStaticProps = async () => {
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const data: PostProps[] = await res.json();
+
+  return {
+    props: {
+      posts: data,
+    },
+  };
+};
+
+export default PostsPage;
