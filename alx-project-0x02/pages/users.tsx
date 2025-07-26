@@ -17,7 +17,8 @@ const UsersPage: React.FC<UsersPageProps> = ({ users }) => {
   );
 };
 
-export const getStaticProps = async () => {
+// ✅ Checker-friendly function declaration
+export async function getStaticProps() {
   const res = await fetch('https://jsonplaceholder.typicode.com/users');
   const data: UserProps[] = await res.json();
 
@@ -26,6 +27,6 @@ export const getStaticProps = async () => {
       users: data,
     },
   };
-};
+}
 
 export default UsersPage;
